@@ -1,7 +1,8 @@
-\documentclass[a4paper]{article}
+\documentclass[a4paper, titlepage]{article}
 \usepackage{xunicode}
 \usepackage{fontspec}
 \usepackage[frenchb]{babel}
+\usepackage{graphicx}
 \renewcommand{\familydefault}{\sfdefault}
 
 \renewcommand{\nobreakspace}{\nobreak\ }
@@ -17,7 +18,80 @@
 	\tableofcontents\clearpage
 
 	\section{Niveau M2}
-	
+		\subsection{Conception}
+			Ce niveau décrit l'architecture d'un système à composants.
+		
+			%Diagramme général M2
+			\begin{figure}[ht]
+				\centering
+				\includegraphics[width=1.00\textwidth]{M2.png}
+				\caption{M2: Modèle de l'architecture à composant}
+				\label{fig:m2}
+			\end{figure}
+		
+		
+			La figure \ref{fig:m2} exprime les différents éléments de l'architecture à
+			composants et leurs liens.
+		
+			\paragraph{Composant}
+			
+				Cette classe est abstraite et doit permettre à n'importe quelle
+				classe de se déclarer comme composant en l'étendant.
+				
+			\paragraph{SimpleComposant et Configuration}
+			
+				Ces deux classes --- avec Composant--- permettent de fournir un
+				pattern composite, demandé par la spécification. Configuration
+				est l'objet composite.
+			
+			\paragraph{Interface}
+			
+				Un Composant possède des interfaces, qui sont de deux types: Port et
+				Service. Ces interfaces sont soit fournies soit requises. Voir page
+				\pageref{def:reqfour} pour les interfaces fournies et requises.
+				
+				
+			\paragraph{Connecteur}
+			
+				Un connecteur connecte une interface fournie (roleFrom) d'un
+				composant, et une interface requise (roleTo) d'un autre. Les
+				interfaces doivent être de différents composants.
+				
+				Les connecteurs sont définis dans les configurations. Ils ne
+				connectent que les interfaces des composants contenus par la
+				configuration.
+				
+			\paragraph{Binding}
+			
+				Un Binding fonctionne comme un connecteur, à la différence qu'il
+				connecte une interface d'une configuration à une interface d'un de
+				ses composants. Les deux interfaces connectées doivent être toutes
+				les deux fournies ou requises.
+				
+				L'appel d'une interface requise d'une configuration doit être passé
+				à l'interface requise du composant connecté.
+				
+				La mise à disposition d'une interface fournie d'un composant doit
+				donner lieu à la mise à disposition de l'interface fournie de sa
+				configuration associée.
+				
+			\paragraph{Requise vs fournie}
+				\label{def:reqfour}
+				Une interface requise est une interface par laquelle on va pouvoir
+				passer des messages à un composant. Son nom vient du fait qu'elle va
+				requérir des informations.
+				
+				Une interface requise est une interface qui va fournir des
+				informations.
+				
+				Quand une interface requise est connectée à une interface fournie,
+				le connecteur se déclenchera quand l'interface fournies se déclarera
+				prête à envoyer des informations.
+				
+			
+			
+		\subsection{Implémentation}
+		
 	
 	\section{Conception et implémentation du M1 : système client-serveur}
 	
