@@ -7,7 +7,7 @@
 
 \renewcommand{\nobreakspace}{\nobreak\ }
 
-\title{Projet HADLf: Conception et réalisation}
+\title{Projet HADL: Conception et réalisation}
 \author{Julien Durillon \and Alexandre Garnier}
 \date{\today}
 
@@ -92,9 +92,48 @@
 			
 		\subsection{Implémentation}
 		
-	
+		Au niveau de l'implémentation, certaines notions ne se présentent plus de
+		la même façon:
+		
+		\subsubsection{Interfaces}
+		
+			Les interfaces des composants ne sont pas des objets à part, mais sont
+			les méthodes et les attributs (resp. service et port) de l'objet
+			représentant un composant.
+			
+		\subsubsection{Composant et Configuration}
+		
+			Nous avons implémenté les composants comme explicité sur le diagramme.
+			Ainsi, nous avons implémenté un pattern composite.
+			
+			Notre but était de mettre un maximum du code traitant des envois de
+			message dans l'implémentation du M2. Ainsi, le M1 ne contiendra que le
+			code spécifique.
+			
+			Pour les messages, nous avons utilisé le pattern Observer-Observable
+			comme fournit par java. Les figures \ref{fig:obsimpl} et
+			\ref{fig:obsimpl2} décrivent l'architecture
+			d'une configuration ainsi que son fonctionnement.
+			
+			\begin{figure}[ht]
+				\centering
+				\includegraphics[width=1.00\textwidth]{obsimpl.png}
+				\caption{Architecture et fonctionnement d'une configuration: les connecteurs}
+				\label{fig:obsimpl}
+			\end{figure}
+			
+			\begin{figure}[ht]
+				\centering
+				\includegraphics[width=1.00\textwidth]{obsimpl2.png}
+				\caption{Architecture et fonctionnement d'une configuration: les bindings}
+				\label{fig:obsimpl2}
+			\end{figure}
+			
+			
 	\section{Conception et implémentation du M1 : système client-serveur}
 	
+	
+	\section{Le framework, ou comment tout faire fonctionner}
 	
 	
 	\section{Modélisation de l'architecture à composant}
