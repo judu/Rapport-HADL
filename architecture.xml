@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration name="CSSystem">
+	<composant name="Client">
+		<service name="setQuery" />
+		<port name="query" />
+		<service name="receive" />
+	</composant>
+
+	<configuration name="Server">
+		<composant name="ConnManager">
+			<service name="parseQuery" />
+			<port name="result" />
+			<port name="query" />
+			<service name="receiveResult" />
+		</composant>
+
+		<composant name="Database">
+			<service name="receiveQuery" />
+			<service name="sendResponse" />
+		</composant>
+
+		<connector name="ConnPSIdent" from="ConnManager.query" to="Database.receiveQuery" />
+		<connector name="ConnSSIdent" from="Database.sendResponse" to="ConnManager.receiveResult" />
+		
+		<service name="parseQuery" ref="ConnManager.parseQuery" />
+		<port name="result" ref="ConnManager.result" />
+	</configuration>
+
+	<connector name="ConnPSIdent" from="Client.query" to="Server.parseQuery" />
+	<connector name="ConnPSIdent" from="Server.result" to="Client.receive" />
+
+	<entrypoint name="run" ref="Client.setQuery" />
+</configuration>

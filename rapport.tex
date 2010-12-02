@@ -1,15 +1,34 @@
-\documentclass[a4paper, titlepage]{article}
+\documentclass[french,a4paper,titlepage]{article}
 \usepackage{xunicode}
 \usepackage{fontspec}
 \usepackage[frenchb]{babel}
 \usepackage{graphicx}
-\renewcommand{\familydefault}{\sfdefault}
+\usepackage{listings}
+\usepackage[T1]{fontenc}
+\usepackage{kpfonts}
+
+
+\renewcommand*{\familydefault}{\sfdefault}
 
 \renewcommand{\nobreakspace}{\nobreak\ }
 
 \title{Projet HADL: Conception et réalisation}
 \author{Julien Durillon \and Alexandre Garnier}
 \date{\today}
+
+
+\lstset{
+   language=XML,
+   basicstyle=\scriptsize,
+   numbers=left,
+   numberstyle=\scriptsize,
+   stepnumber=1,
+   showspaces=false,
+   showstringspaces=false,
+   morekeywords={configuration,composant,service,port,entrypoint,connector},
+   tabsize=2
+}
+
 
 \begin{document}
 
@@ -37,7 +56,11 @@
     l'application Client-Serveur à proprement parler.
 
 	\section{Niveau M2}
+	
+		Pour commencer, nous avons défini notre système en suivant la méthode top-down, pendant la conception comme pendant l'implémentation.
+	
 		\subsection{Conception}
+		\normalfont
 			Ce niveau décrit l'architecture d'un système à composants.
 		
 			%Diagramme général M2
@@ -88,7 +111,7 @@
 				
 				L'appel d'une interface requise d'une configuration doit être passé
 				à l'interface requise du composant connecté.
-				
+
 				La mise à disposition d'une interface fournie d'un composant doit
 				donner lieu à la mise à disposition de l'interface fournie de sa
 				configuration associée.
@@ -169,10 +192,98 @@
     
       
 	
+		Grâce aux élément définis dans la section précédente, nous n'avons plus grand chose à implémenter.
+		
+		Le contenu du système Client Serveur est donc un jar se composant de :
+		
+		\begin{verbatim}
+|-- fr
+|   `-- alma
+|       `-- hadlm1cs
+|           |-- components
+|           |   |-- Client.class
+|           |   |-- ConnManager.class
+|           |   `-- Database.class
+|           |-- configurations
+|           |   |-- CSSystem.class
+|           |   `-- Server.class
+|           `-- connectors
+|               |-- ConnPSIdent.class
+|               `-- ConnSSIdent.class
+`-- META-INF
+    `-- architecture.xml
+		\end{verbatim}
+		
+		
+		Le fichier architecture.xml (exposé dans la figure \ref{fig:architecture.xml}) décrit l'architecture du système. Les classes contenues dans le jar implémentent chaque élément, et sont annotées de façon à pouvoir faire le lien entre un composant du fichier xml et une classe fournie.
+		
+		Ce fonctionnement permet une très bonne réutilisabilité du code.
+		
+		
+		\begin{figure}[htb]
+			\centering
+			\lstinputlisting{architecture.xml}
+			\caption{Contenu du fichier architecture.xml}
+			\label{fig:architecture.xml}
+
+		\end{figure}
+	
 	\section{Le framework, ou comment tout faire fonctionner}
 	
+		Pour faciliter la réutilisation et le développement des systèmes au niveau M1, nous avons développé un framework. La figure \ref{fig:framework} montre l'agencement des différents éléments --- M1, M2, framework\dots --- qui constituent une application à composants.
+		
+		Pour lancer un système, il suffit de lancer le framework en lui passant en paramètre le chemin vers le jar du système. Le framework va se charger de lire le fichier architecture.xml, puis charger les classes requises, et lancer le système.
+		
+		Nous avons introduit l'élément \emph{entrypoint} dans le document, qui définit le nom du service à appeler en premier, et qui référence la méthode qui sera appelée en premier lors du lancement du système après sa construction.
+		
+		\begin{figure}[htb]
+			\centering
+			\includegraphics[width=0.8\textwidth]{./framework.png}
+			\caption{Dépendances entre les éléments du framework}
+			\label{fig:framework}
+		\end{figure}
 	
-	\section{Modélisation de l'architecture à composant}
+	
+	\section{Refaisons tout depuis tout en haut}
+	
+		Après nous être intéressés à la modélisation générique d'un système à composant, à la modélisation de son implémentation et à son implémentation effective, nous avons repris la modélisation depuis le M3 (au niveau du méta-méta-modèle). Nous avons suivi la méthode top-down encore une fois pour générer le M2 puis le M1, en version plus complète.
+		
+		La figure \ref{fig:M3} illustre notre définition du niveau M3.
+		
+		\begin{figure}[htb]
+			\centering
+			\includegraphics[width=\textwidth]{m3.png}
+			\caption{Modélisation du niveau M3}
+			\label{fig:M3}
+		\end{figure}
+		
+		\subsection{Description du niveau M3}
+		
+		
+			Le niveau M3 doit permettre de définir les niveaux M2 et M1, et de se définir lui même. Tout commence donc avec la création de l'élément \emph{Méta-entité}. Cet élément est l'ancêtre de tous les autres.
+			
+			\subsubsection{instance\_of}
+			
+				L'élément suivant à définir est la relation \emph{instance\_of} qui définit une relation d'instanciation entre une entité et une méta-entité. Une entité A définie comme une instance of une entité B aura tous les attributs de l'entité B. L'élément \emph{Méta\_entité} est une instance de lui même.
+				
+				La relation \emph{instance\_of} n'est pas cumulative: un élément ne peut pas être instance de plusieurs autres éléments; elle est néanmoins transitive: si \verb!A instance_of B! et \verb!B instance_of C!, alors \verb!A instance_of C!; pour finir, elle n'est pas symétrique: si \verb!A instanceof B! alors \verb!B instance_of A! n'est pas possible.
+				
+			\subsubsection{Relation, OrientedRelation et CardRelation}
+			
+				Nous pouvons maintenant définir les relations orientées et avec cardinalité comme des instances de \emph{Méta\_entité}.
+				Ces relations sont représentées par la suite par des flèches portant le nom de la relation utilisée.
+				
+				Les relations \emph{from} et \emph{to} utilisées uniquement au niveau M3 permettent de définir l'orientation d'une relation. le côté flèche sera celui de la relation \emph{to} tandis que l'autre sera celui de la relation \emph{from}. Ces relations sont définies entre une Relation et une Méta\_entité.
+				
+				Une relation orienté ou avec cardinalité n'est pas symétrique. Une relation avec cardinalité permet de définir combien de fois une entité (ou ses instances) peut être impliquée dans la relation.
+				
+			\subsubsection{kind\_of}
+			
+				La relation orientée \emph{kind\_of} permet de définir une méta entité comme étant un équivalent d'une autre méta entité; cette relation est transitive, et permet de restreindre ou d'ajouter des attributs à une entité.
+				
+				\paragraph{instance\_of} Nous pouvons donc définir cette relation comme un type
+		
+		
 	
 	
 	
