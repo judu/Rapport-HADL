@@ -32,8 +32,8 @@
     
     Nous avons dès lors choisi de suivre une approche descendante
     (\emph{top-down}) du travail à effectuer. C'est à dire que nous sommes
-    partis des concepts permettant la gestion des composants de manière général,
-    pour ensuite les utiliser afin de parvenir à l'implémentation de
+    partis des concepts permettant la gestion des composants de manière
+    générale, pour ensuite les utiliser afin de parvenir à l'implémentation de
     l'application Client-Serveur à proprement parler.
 
 	\section{Niveau M2}
@@ -47,8 +47,7 @@
 				\caption{M2: Modèle de l'architecture à composant}
 				\label{fig:m2}
 			\end{figure}
-		
-		
+
 			La figure \ref{fig:m2} exprime les différents éléments de l'architecture à
 			composants et leurs liens.
 		
@@ -137,20 +136,38 @@
 			\begin{figure}[ht]
 				\centering
 				\includegraphics[width=1.00\textwidth]{obsimpl.png}
-				\caption{Architecture et fonctionnement d'une configuration: les connecteurs}
+				\caption{Architecture et fonctionnement d'une configuration: les
+				          connecteurs}
 				\label{fig:obsimpl}
 			\end{figure}
 			
 			\begin{figure}[ht]
 				\centering
 				\includegraphics[width=1.00\textwidth]{obsimpl2.png}
-				\caption{Architecture et fonctionnement d'une configuration: les bindings}
+				\caption{Architecture et fonctionnement d'une configuration: les
+          			  bindings}
 				\label{fig:obsimpl2}
 			\end{figure}
 			
 			
 	\section{Conception et implémentation du M1 : système client-serveur}
 	
+	  L'implémentation des concepts liés à la gestion des composants ayant été
+	  assurée au niveau M2, l'implémentation propre du système Client-Serveur est
+	  dès lors rendue bien plus aisée.
+	  
+    Ainsi, et dans l'optique de séparer composants et architecture du système,
+    nous avons choisi de disposer d'un pool de composants et de connecteurs
+    d'une part, et d'un fichier \emph{architecture.xml} décrivant les liens au
+    sein de cette architecture d'autre part.
+    
+    \subsection{Gestion et définition des composants et connecteurs}
+    
+      
+    
+    \subsection{Fichier \emph{architecture.xml}}
+    
+      
 	
 	\section{Le framework, ou comment tout faire fonctionner}
 	
