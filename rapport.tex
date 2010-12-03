@@ -103,6 +103,7 @@
 				configuration.
 				
 			\paragraph{Binding}
+				\label{s:binding}
 			
 				Un Binding fonctionne comme un connecteur, à la différence qu'il
 				connecte une interface d'une configuration à une interface d'un de
@@ -173,7 +174,7 @@
 			\end{figure}
 			
 			
-	\section{Conception et implémentation du M1 : système client-serveur}
+	\section{Conception et implémentation du M1 : système client-serveur}\label{s:m1}
 	
 	  L'implémentation des concepts liés à la gestion des composants ayant été
 	  assurée au niveau M2, l'implémentation propre du système Client-Serveur est
@@ -185,17 +186,17 @@
     sein de cette architecture d'autre part.
     
     \subsection{Gestion et définition des composants et connecteurs}
-    
-      
+
+    	Nous avons créé une première configuration \emph{CSSystem} qui contient tout le reste. Elle contient un composant \emph{Client} et une configuration \emph{Server}. La configuration \emph{Server} contient un composant \emph{ConnManager} --- qui traitera les requêtes envoyées au serveur, et un composant \emph{Database}.
+    	
+    	Les connecteurs définis ici servent à faire passer un message depuis Client jusqu'à Server, et à l'intérieur de Server de ConnManager à Database, et de faire le chemin inverse après traitement du message par Database.
     
     \subsection{Fichier \emph{architecture.xml}}
-    
-      
 	
 		Grâce aux élément définis dans la section précédente, nous n'avons plus grand chose à implémenter.
 		
-		Le contenu du système Client Serveur est donc un jar se composant de :
-		
+		Le contenu du système Client Serveur est donc un jar dont le contenu est décrit dans la figure \ref{fig:m1jar}.
+		\begin{figure}[htb]
 		\begin{verbatim}
 |-- fr
 |   `-- alma
@@ -213,6 +214,9 @@
 `-- META-INF
     `-- architecture.xml
 		\end{verbatim}
+		\caption{Architecture de l'implémentation du niveau M1.}
+		\label{fig:m1jar}
+		\end{figure}
 		
 		
 		Le fichier architecture.xml (exposé dans la figure \ref{fig:architecture.xml}) décrit l'architecture du système. Les classes contenues dans le jar implémentent chaque élément, et sont annotées de façon à pouvoir faire le lien entre un composant du fichier xml et une classe fournie.
@@ -268,6 +272,8 @@
 				
 				La relation \emph{instance\_of} n'est pas cumulative: un élément ne peut pas être instance de plusieurs autres éléments; elle est néanmoins transitive: si \verb!A instance_of B! et \verb!B instance_of C!, alors \verb!A instance_of C!; pour finir, elle n'est pas symétrique: si \verb!A instanceof B! alors \verb!B instance_of A! n'est pas possible.
 				
+				Pour plus de confort nous utiliserons l'alias \emph{i\_o} pour représenter la relation \emph{instance\_of}.
+				
 			\subsubsection{Relation, OrientedRelation et CardRelation}
 			
 				Nous pouvons maintenant définir les relations orientées et avec cardinalité comme des instances de \emph{Méta\_entité}.
@@ -279,9 +285,68 @@
 				
 			\subsubsection{kind\_of}
 			
-				La relation orientée \emph{kind\_of} permet de définir une méta entité comme étant un équivalent d'une autre méta entité; cette relation est transitive, et permet de restreindre ou d'ajouter des attributs à une entité.
+				La relation orientée \emph{kind\_of} permet de définir une méta entité comme étant un équivalent d'une autre méta entité; cette relation est transitive, et permet de restreindre ou d'ajouter des attributs à une entité. C'est l'équivalent de la relation d'héritage. 
 				
-				\paragraph{instance\_of} Nous pouvons donc définir cette relation comme un type
+				\paragraph{instance\_of} Nous pouvons donc définir cette relation comme une sorte de relation orientée.
+				
+			\subsubsection{contains}
+			
+				Cette relation est à la fois une sorte de relation orientée, et une sorte de relation avec cardinalité. Cette relation permet de spécifier qu'une Méta~entité (dite composite) contient une ou plusieurs autres Méta~entités. Elle sera représentée par une flèche étiquetée «contains» et les cardinalités des objets aux extrémités de la flèche.
+				
+				
+		\subsection{Description du niveau M2}
+		
+			Le niveau M2 décrit les entités utilisées par une architecture à composants. Il sera illustré par la figure \ref{fig:m2-new}.
+			
+			\begin{figure}[htb]
+				\centering
+				\includegraphics[width=\textwidth]{m2-new.png}
+				\caption{Modélisation du niveau M2: nouvelle version}
+				\label{fig:m2-new}
+			\end{figure}
+		
+		
+		Ici, nous allons définir l'entité \emph{Composant}, ainsi que ses dérivées: \emph{SimpleComposant} et \emph{Configuration}. Ces entités sont la base du système; une configuration contient des composants, et est elle même une sorte de composant.
+		
+		
+		\subsubsection{Interface: port et service}
+		
+			Un composant contient plusieurs interfaces. Celle-ci sont explicités à ce niveau, mais seront implicites au niveau M1.
+			
+		\subsubsection{instance\_of'}
+		
+			Cette relation est la relation d'instanciation qui sera utilisée entre le niveau M1 et le niveau M0. Nous la définissons ici, pour différencier les entités (classes) et leurs instances au niveau de l'exécution. C'est une instance particulière de la relation \emph{instance\_of}.
+			
+			Comme pour \emph{instance\_of}, nous utiliserons l'alias \emph{i\_o'}.
+			
+			
+			
+		\subsubsection{Connecteur et Binding}
+			Un connecteur est une entité qui permet de relier une interface d'un composant à une interface d'un autre composant. On définit pour l'occasion deux nouvelles relations orientées: \emph{roleFrom} et \emph{roleTo}. Ces relations ont un attribut qui est le nom de l'interface connectée.
+			
+			Contrairement à notre implémentation décrite dans la section \ref{s:binding}, un \emph{Binding} est une sorte de \emph{Connecteur}.
+			
+			Un connecteur est enregistré dans une configuration.
+			
+			
+			
+	\subsection{Description du niveau M1}
+	
+		Le niveau M1 décrit notre système client-serveur. Il est illustré par la figure \ref{fig:m1-new}.
+	
+		\begin{figure}[htb]
+			\centering
+			\includegraphics[width=\textwidth]{m1-new.png}
+			\caption{Modélisation du niveau M1}
+			\label{fig:m1-new}
+		\end{figure}
+		
+		
+		Ici, nous pouvons compter cinq composants: la configuration \emph{SystemClientServer}, la configuration \emph{Server}, le composant \emph{Client}, le composant \emph{ConnectionManager} et le composant \emph{Database}. Ce niveau est le même que celui présenté dans la section \ref{s:m1}
+		
+			
+			
+
 		
 		
 	
