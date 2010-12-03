@@ -18,15 +18,15 @@
 
 
 \lstset{
-   language=XML,
-   basicstyle=\scriptsize,
-   numbers=left,
+  language=XML,
+  basicstyle=\scriptsize,
+  numbers=left,
    numberstyle=\scriptsize,
-   stepnumber=1,
-   showspaces=false,
-   showstringspaces=false,
-   morekeywords={configuration,composant,service,port,entrypoint,connector},
-   tabsize=2
+  stepnumber=1,
+  showspaces=false,
+  showstringspaces=false,
+  morekeywords={configuration,composant,service,port,entrypoint,connector},
+  tabsize=2
 }
 
 
@@ -57,7 +57,8 @@
 
 	\section{Niveau M2}
 	
-		Pour commencer, nous avons défini notre système en suivant la méthode top-down, pendant la conception comme pendant l'implémentation.
+		Pour commencer, nous avons défini notre système en suivant la méthode
+		top-down, pendant la conception comme pendant l'implémentation.
 	
 		\subsection{Conception}
 		\normalfont
@@ -174,7 +175,8 @@
 			\end{figure}
 			
 			
-	\section{Conception et implémentation du M1 : système client-serveur}\label{s:m1}
+	\section{Conception et implémentation du M1: système
+	client-serveur}\label{s:m1}
 	
 	  L'implémentation des concepts liés à la gestion des composants ayant été
 	  assurée au niveau M2, l'implémentation propre du système Client-Serveur est
@@ -187,15 +189,24 @@
     
     \subsection{Gestion et définition des composants et connecteurs}
 
-    	Nous avons créé une première configuration \emph{CSSystem} qui contient tout le reste. Elle contient un composant \emph{Client} et une configuration \emph{Server}. La configuration \emph{Server} contient un composant \emph{ConnManager} --- qui traitera les requêtes envoyées au serveur, et un composant \emph{Database}.
+    	Nous avons créé une première configuration \emph{CSSystem} qui contient
+    	tout le reste. Elle contient un composant \emph{Client} et une
+    	configuration \emph{Server}. La configuration \emph{Server} contient un
+    	composant \emph{ConnManager} --- qui traitera les requêtes envoyées au
+    	serveur, et un composant \emph{Database}.
     	
-    	Les connecteurs définis ici servent à faire passer un message depuis Client jusqu'à Server, et à l'intérieur de Server de ConnManager à Database, et de faire le chemin inverse après traitement du message par Database.
+    	Les connecteurs définis ici servent à faire passer un message depuis
+    	Client jusqu'à Server, et à l'intérieur de Server de ConnManager à
+    	Database, et de faire le chemin inverse après traitement du message par
+    	Database.
     
     \subsection{Fichier \emph{architecture.xml}}
 	
-		Grâce aux élément définis dans la section précédente, nous n'avons plus grand chose à implémenter.
+		Grâce aux élément définis dans la section précédente, nous n'avons plus
+		grand chose à implémenter.
 		
-		Le contenu du système Client Serveur est donc un jar dont le contenu est décrit dans la figure \ref{fig:m1jar}.
+		Le contenu du système Client Serveur est donc un jar dont le contenu est
+		décrit dans la figure \ref{fig:m1jar}.
 		\begin{figure}[htb]
 		\begin{verbatim}
 |-- fr
@@ -219,7 +230,11 @@
 		\end{figure}
 		
 		
-		Le fichier architecture.xml (exposé dans la figure \ref{fig:architecture.xml}) décrit l'architecture du système. Les classes contenues dans le jar implémentent chaque élément, et sont annotées de façon à pouvoir faire le lien entre un composant du fichier xml et une classe fournie.
+		Le fichier architecture.xml (exposé dans la figure
+		\ref{fig:architecture.xml}) décrit l'architecture du système. Les classes
+		contenues dans le jar implémentent chaque élément, et sont annotées de façon
+		à pouvoir faire le lien entre un composant du fichier xml et une classe
+		fournie.
 		
 		Ce fonctionnement permet une très bonne réutilisabilité du code.
 		
@@ -234,11 +249,20 @@
 	
 	\section{Le framework, ou comment tout faire fonctionner}
 	
-		Pour faciliter la réutilisation et le développement des systèmes au niveau M1, nous avons développé un framework. La figure \ref{fig:framework} montre l'agencement des différents éléments --- M1, M2, framework\dots --- qui constituent une application à composants.
+		Pour faciliter la réutilisation et le développement des systèmes au niveau
+		M1, nous avons développé un framework. La figure \ref{fig:framework} montre
+		l'agencement des différents éléments --- M1, M2, framework\dots --- qui
+		constituent une application à composants.
 		
-		Pour lancer un système, il suffit de lancer le framework en lui passant en paramètre le chemin vers le jar du système. Le framework va se charger de lire le fichier architecture.xml, puis charger les classes requises, et lancer le système.
+		Pour lancer un système, il suffit de lancer le framework en lui passant en
+		paramètre le chemin vers le jar du système. Le framework va se charger de
+		lire le fichier architecture.xml, puis charger les classes requises, et
+		lancer le système.
 		
-		Nous avons introduit l'élément \emph{entrypoint} dans le document, qui définit le nom du service à appeler en premier, et qui référence la méthode qui sera appelée en premier lors du lancement du système après sa construction.
+		Nous avons introduit l'élément \emph{entrypoint} dans le document, qui
+		définit le nom du service à appeler en premier, et qui référence la méthode
+		qui sera appelée en premier lors du lancement du système après sa
+		construction.
 		
 		\begin{figure}[htb]
 			\centering
@@ -250,7 +274,11 @@
 	
 	\section{Refaisons tout depuis tout en haut}
 	
-		Après nous être intéressés à la modélisation générique d'un système à composant, à la modélisation de son implémentation et à son implémentation effective, nous avons repris la modélisation depuis le M3 (au niveau du méta-méta-modèle). Nous avons suivi la méthode top-down encore une fois pour générer le M2 puis le M1, en version plus complète.
+		Après nous être intéressés à la modélisation générique d'un système à
+		composant, à la modélisation de son implémentation et à son implémentation
+		effective, nous avons repris la modélisation depuis le M3 (au niveau du
+		méta-méta-modèle). Nous avons suivi la méthode top-down encore une fois pour
+		générer le M2 puis le M1, en version plus complète.
 		
 		La figure \ref{fig:M3} illustre notre définition du niveau M3.
 		
@@ -264,39 +292,67 @@
 		\subsection{Description du niveau M3}
 		
 		
-			Le niveau M3 doit permettre de définir les niveaux M2 et M1, et de se définir lui même. Tout commence donc avec la création de l'élément \emph{Méta-entité}. Cet élément est l'ancêtre de tous les autres.
+			Le niveau M3 doit permettre de définir les niveaux M2 et M1, et de se
+			définir lui même. Tout commence donc avec la création de l'élément
+			\emph{Méta-entité}. Cet élément est l'ancêtre de tous les autres.
 			
 			\subsubsection{instance\_of}
 			
-				L'élément suivant à définir est la relation \emph{instance\_of} qui définit une relation d'instanciation entre une entité et une méta-entité. Une entité A définie comme une instance of une entité B aura tous les attributs de l'entité B. L'élément \emph{Méta\_entité} est une instance de lui même.
+				L'élément suivant à définir est la relation \emph{instance\_of} qui
+				définit une relation d'instanciation entre une entité et une
+				méta-entité. Une entité A définie comme une instance of une entité B
+				aura tous les attributs de l'entité B. L'élément \emph{Méta\_entité} est
+				une instance de lui même.
 				
-				La relation \emph{instance\_of} n'est pas cumulative: un élément ne peut pas être instance de plusieurs autres éléments; elle est néanmoins transitive: si \verb!A instance_of B! et \verb!B instance_of C!, alors \verb!A instance_of C!; pour finir, elle n'est pas symétrique: si \verb!A instanceof B! alors \verb!B instance_of A! n'est pas possible.
+				La relation \emph{instance\_of} n'est pas cumulative: un élément ne peut
+				pas être instance de plusieurs autres éléments; elle est néanmoins
+				transitive: si \verb!A instance_of B! et \verb!B instance_of C!, alors
+				\verb!A instance_of C!; pour finir, elle n'est pas symétrique: si
+				\verb!A instanceof B! alors \verb!B instance_of A! n'est pas possible.
 				
-				Pour plus de confort nous utiliserons l'alias \emph{i\_o} pour représenter la relation \emph{instance\_of}.
+				Pour plus de confort nous utiliserons l'alias \emph{i\_o} pour
+				représenter la relation \emph{instance\_of}.
 				
 			\subsubsection{Relation, OrientedRelation et CardRelation}
 			
-				Nous pouvons maintenant définir les relations orientées et avec cardinalité comme des instances de \emph{Méta\_entité}.
-				Ces relations sont représentées par la suite par des flèches portant le nom de la relation utilisée.
+				Nous pouvons maintenant définir les relations orientées et avec
+				cardinalité comme des instances de \emph{Méta\_entité}.
+				Ces relations sont représentées par la suite par des flèches portant le
+				nom de la relation utilisée.
 				
-				Les relations \emph{from} et \emph{to} utilisées uniquement au niveau M3 permettent de définir l'orientation d'une relation. le côté flèche sera celui de la relation \emph{to} tandis que l'autre sera celui de la relation \emph{from}. Ces relations sont définies entre une Relation et une Méta\_entité.
+				Les relations \emph{from} et \emph{to} utilisées uniquement au niveau M3
+				permettent de définir l'orientation d'une relation. le côté flèche sera
+				celui de la relation \emph{to} tandis que l'autre sera celui de la
+				relation \emph{from}. Ces relations sont définies entre une Relation et
+				une Méta\_entité.
 				
-				Une relation orienté ou avec cardinalité n'est pas symétrique. Une relation avec cardinalité permet de définir combien de fois une entité (ou ses instances) peut être impliquée dans la relation.
+				Une relation orienté ou avec cardinalité n'est pas symétrique. Une
+				relation avec cardinalité permet de définir combien de fois une entité
+				(ou ses instances) peut être impliquée dans la relation.
 				
 			\subsubsection{kind\_of}
 			
-				La relation orientée \emph{kind\_of} permet de définir une méta entité comme étant un équivalent d'une autre méta entité; cette relation est transitive, et permet de restreindre ou d'ajouter des attributs à une entité. C'est l'équivalent de la relation d'héritage. 
+				La relation orientée \emph{kind\_of} permet de définir une méta entité
+				comme étant un équivalent d'une autre méta entité; cette relation est
+				transitive, et permet de restreindre ou d'ajouter des attributs à une
+				entité. C'est l'équivalent de la relation d'héritage. 
 				
-				\paragraph{instance\_of} Nous pouvons donc définir cette relation comme une sorte de relation orientée.
+				\paragraph{instance\_of} Nous pouvons donc définir cette relation comme
+				une sorte de relation orientée.
 				
 			\subsubsection{contains}
 			
-				Cette relation est à la fois une sorte de relation orientée, et une sorte de relation avec cardinalité. Cette relation permet de spécifier qu'une Méta~entité (dite composite) contient une ou plusieurs autres Méta~entités. Elle sera représentée par une flèche étiquetée «contains» et les cardinalités des objets aux extrémités de la flèche.
+				Cette relation est à la fois une sorte de relation orientée, et une
+				sorte de relation avec cardinalité. Cette relation permet de spécifier
+				qu'une Méta~entité (dite composite) contient une ou plusieurs autres
+				Méta~entités. Elle sera représentée par une flèche étiquetée «contains»
+				et les cardinalités des objets aux extrémités de la flèche.
 				
 				
 		\subsection{Description du niveau M2}
 		
-			Le niveau M2 décrit les entités utilisées par une architecture à composants. Il sera illustré par la figure \ref{fig:m2-new}.
+			Le niveau M2 décrit les entités utilisées par une architecture à
+			composants. Il sera illustré par la figure \ref{fig:m2-new}.
 			
 			\begin{figure}[htb]
 				\centering
@@ -306,25 +362,36 @@
 			\end{figure}
 		
 		
-		Ici, nous allons définir l'entité \emph{Composant}, ainsi que ses dérivées: \emph{SimpleComposant} et \emph{Configuration}. Ces entités sont la base du système; une configuration contient des composants, et est elle même une sorte de composant.
+		Ici, nous allons définir l'entité \emph{Composant}, ainsi que ses dérivées:
+		\emph{SimpleComposant} et \emph{Configuration}. Ces entités sont la base du
+		système; une configuration contient des composants, et est elle même une
+		sorte de composant.
 		
 		
 		\subsubsection{Interface: port et service}
 		
-			Un composant contient plusieurs interfaces. Celle-ci sont explicités à ce niveau, mais seront implicites au niveau M1.
+			Un composant contient plusieurs interfaces. Celle-ci sont explicités à ce
+			niveau, mais seront implicites au niveau M1.
 			
 		\subsubsection{instance\_of'}
 		
-			Cette relation est la relation d'instanciation qui sera utilisée entre le niveau M1 et le niveau M0. Nous la définissons ici, pour différencier les entités (classes) et leurs instances au niveau de l'exécution. C'est une instance particulière de la relation \emph{instance\_of}.
+			Cette relation est la relation d'instanciation qui sera utilisée entre le
+			niveau M1 et le niveau M0. Nous la définissons ici, pour différencier les
+			entités (classes) et leurs instances au niveau de l'exécution. C'est une
+			instance particulière de la relation \emph{instance\_of}.
 			
 			Comme pour \emph{instance\_of}, nous utiliserons l'alias \emph{i\_o'}.
 			
 			
 			
 		\subsubsection{Connecteur et Binding}
-			Un connecteur est une entité qui permet de relier une interface d'un composant à une interface d'un autre composant. On définit pour l'occasion deux nouvelles relations orientées: \emph{roleFrom} et \emph{roleTo}. Ces relations ont un attribut qui est le nom de l'interface connectée.
+			Un connecteur est une entité qui permet de relier une interface d'un
+			composant à une interface d'un autre composant. On définit pour l'occasion
+			deux nouvelles relations orientées: \emph{roleFrom} et \emph{roleTo}. Ces
+			relations ont un attribut qui est le nom de l'interface connectée.
 			
-			Contrairement à notre implémentation décrite dans la section \ref{s:binding}, un \emph{Binding} est une sorte de \emph{Connecteur}.
+			Contrairement à notre implémentation décrite dans la section
+			\ref{s:binding}, un \emph{Binding} est une sorte de \emph{Connecteur}.
 			
 			Un connecteur est enregistré dans une configuration.
 			
@@ -332,7 +399,8 @@
 			
 	\subsection{Description du niveau M1}
 	
-		Le niveau M1 décrit notre système client-serveur. Il est illustré par la figure \ref{fig:m1-new}.
+		Le niveau M1 décrit notre système client-serveur. Il est illustré par la
+		figure \ref{fig:m1-new}.
 	
 		\begin{figure}[htb]
 			\centering
@@ -342,15 +410,32 @@
 		\end{figure}
 		
 		
-		Ici, nous pouvons compter cinq composants: la configuration \emph{SystemClientServer}, la configuration \emph{Server}, le composant \emph{Client}, le composant \emph{ConnectionManager} et le composant \emph{Database}. Ce niveau est le même que celui présenté dans la section \ref{s:m1}
+		Ici, nous pouvons compter cinq composants: la configuration
+		\emph{SystemClientServer}, la configuration \emph{Server}, le composant
+		\emph{Client}, le composant \emph{ConnectionManager} et le composant
+		\emph{Database}. Ce niveau est le même que celui présenté dans la section
+		\ref{s:m1}
 		
-			
-			
-
-		
-		
+	\section*{Conclusion}
+	\addcontentsline{toc}{section}{Conclusion}
 	
+	Au travers de ce projet, nous avons pu découvrir la problématique liée à la
+	représentation et l'implémentation d'un paradigme composants.
 	
+	Dans un premier temps, nous avons spécifié et développé une application
+	Client-Serveur au niveau M2 suivant une architecture à Composants au niveau
+	M2, selon une méthode \emph{top-down}, dans le but d'assurer au mieux le
+	respect des concepts inhérents à la notion de composants.
 	
+	Ensuite, une deuxième approche où nous avons cherché à modéliser le paradigme
+	composants au niveau M3, nous aura amené à revoir la vision que nous avions eu
+	dans la première partie des niveaux M2 et M1.
+	
+	En conclusion, nous être confrontés tout d'abord aux différents aspects
+	inhérents à la problématique du développement d'une application sur base de
+	composants nous aura apporté une meilleure appréhension des concepts et
+	contraintes liées. Cette première étape nous a dès lors permis par la suite de
+	proposer une modélisation du paradigme composants, et d'ainsi proposer une
+	solution efficace à cette problématique.
 	
 \end{document}
